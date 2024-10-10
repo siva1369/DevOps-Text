@@ -1,0 +1,1890 @@
+Ansible :-
+-------------
+
+it is a configuration management tool.
+
+this is process of configuring remote server from one point of control.
+
+
+Advantages:-
+-----------
+
+1. provisioning of servers
+
+this applications that should be installed on server can be done very quickly from a single centralized location.
+
+2. idempotent
+
+configuration management tools are used to bring the server to a particular state, called as desired state, called as desired state. if a server already in the desired state, configuring management tools will not reconfigure that server.
+
+note: configuring management tools cannot be used for installing OS from the scratch.
+they can be used only for managing the application on top of the OS.
+
+configuration management tools are ansible, chef, puppet, salt etc..
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ansible:-
+--------
+
+it is open source configuration management tool , created using python.
+main machine in which ansible is installed is called as controller.
+remote server that ansible configures , are called as managed nodes.
+
+ansible uses agent less policy for configures remote server ie ansible is installed only on 1 machine, and we do not requre any clint side software to be installed on the remote server.
+
+ansible performs configuration management through password less ssh.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+create 4 servers (ubuntu 18)
+
+
+nameing the instances
+
+controller = ansible 
+server1
+server2
+server3
+
+ubuntu machines defolt come with python3
+ansible supports python2
+we need to downgrade the machines from python3 to python2
+
+connect server1
+check the version
+
+$ python3 --version
+
+to install python2
+
+$ sudo apt-get update
+
+$ sudo apt-get dist-upgrade 
+
+(it will point to older apt repository where python2 is avilable)
+
+$ sudo apt-get install -y python2.7 python-pip
+
+$ sudo apt-get install python3-pip
+
+
+now check the version of python
+
+$ python -- version
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+establish the password less comminication
+
+$ sudo passwd ubuntu
+
+(lets give the passward as ubuntu only)
+
+$ sudo vim /etc/ssh/sshd_config
+
+change
+passwordauthontication -- yes
+save and quit
+
+$ sudo service ssh restart
+
+$ exit
+
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+now do the same as this remaining  servers 2 and sarver 3
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+now , connect controller 
+even in controller also python2 version should be available
+
+(so, run the same commands)
+
+$ sudo apt-get update
+
+$ sudo apt-get dist-upgrade
+
+$ sudo apt-get install -y python2.7 python-pip
+
+now check the version of python
+
+$ python --version
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+now we need to generate ssh connections
+
+$ ssh-keygen
+
+now copy the key to managed nodes
+
+$ ssh-copy-id ubuntu@private_ip server1
+
+$ ssh-copy-id ubuntu@private_ip server2
+
+$ ssh-copy-id ubuntu@private_ip server3
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+installing ansible now 
+
+connect to controller.
+
+$ sudo apy-get install software-properties-common
+
+(software-properties-common ,is a base package which is requred to install ansible)
+
+$ sudo apt-add-repository ppa:ansible/ansible
+
+$ sudo apt-get update
+
+$ sudo apt-get install -y ansible
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+to check the version of ansible
+
+$ ansible --version
+
+
+to see the all connected servers
+
+ansible all -m ping
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+write the ip address of nodes in the inventory files (host)
+
+$ cd /etc/ansible
+
+$ ls
+
+$ sudo vim host
+
+insert the private ip address of 3 servers
+
+save and quit
+
+$ ls -la (to see the list in the current machine )
+
+$ ansible all -a 'ls -la'
+
+(you will get the list of the files in all managed nodes)
+
+in linux " $ free " this command is used for the knowing the memory status
+
+
+to knowing the all servers memory status
+
+$ ansible all -a 'free' 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+in two ways we can exicute the ansible
+
+1. adhoc commands
+2. playbooks
+
+
+Adhoc commands:-
+-----------------
+
+important modules in ansible
+
+1. command
+2. shell
+3. ping
+4. user 
+5. copy 
+6. fetch
+7. file
+8. stat
+9. debug
+10. apt 
+11. yum
+12. git
+13. replace
+14. service
+15. include
+16. uri
+17. docker_container
+18. docker_image
+19. docker_login 
+20. setup
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+$ ansible all -i /etc/ansible/hosts -m command -a 'free'
+
+ansible = every ansible command starts with ansible
+all = it means all the nodes
+-i = inventory file (host)
+-m = module (command)
+-a = arguments 
+
+
+it shows the all nodes memory data
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+$ ansible all -i /etc/ansible/hosts -m command -a 'touch file1'
+
+file1 will be created in all the nodes
+
+to check the file was created or not 
+
+$ ssh private_ip of node
+
+$ ls
+
+$ exit (to come back to contloller)
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+to install a docker in all the nodes
+
+
+$ ansible all -i /etc/ansible/hosts -m shell -a 'curl -fsSL https://get.docker.com -o get-docker.sh'
+
+$ ansible all -i /etc/ansible/hosts -m shell -a 'sh get-docker.sh' 
+
+
+to check the docker installed or not 
+
+$ ssh private_ip of node
+
+$ docker --version
+
+$ exit (to come back to contloller)
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+note:- 
+
+ansible performs remote configurations in 2 ways
+
+1. using adhoc commands
+2. using play books
+
+syntx:- 
+
+$ ansible all/group_name/ipaddress -i path_of_inventory_file -m modulename -a 'argument'
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+to open the default inventor file 
+
+$ sudo vim /etc/ansible/hosts
+
+(what ever the nodes we have those ip's are present their)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+create my own inventory file
+
+$ vim myinventory
+
+go to insert mode
+
+past the nodes ip's
+
+save and quit
+
+ex:-
+
+$ ansible all -i myinventory -m command -a 'free'
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+create my own inventory file
+
+$ vim siva
+
+go to insert mode
+
+past the nodes ip's
+
+save and quit
+
+ex:-
+
+$ ansible all -i siva -m command -a 'free'
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+note :-
+
+if we do not mention the inventory file , it will take defolt inventory file.
+
+/etc/ansible/hosts
+
+
+
+$ ansible all -i siva -m command -a 'free'
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+note command module is the defolt module in ansible
+
+$ ansible all -a 'free'
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+shell module:-
+
+ansible command to execute ls -la and store the output into file on all the managed nodes.
+
+$ ansible all -m shell -a 'ls -la > file2'
+
+to check the file which is created
+
+$ ssh private ip
+
+$ ls
+ 
+$ exit ( for come back to the controller )
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+user module:- (from controller machine)
+
+to create a new user 
+
+$ sudo useradd siva
+
+$ vim /etc/passwd  (user will be created in this file)
+
+to set the password
+
+$ sudo password siva (siva is the username)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+now i want to create user in all managed nodes
+
+$ ansible all -m user -a 'name=siva password=siva'
+
+(we will get error for no permissions)
+
+
+
+$ ansible all -m user -a 'name=siva password=siva' -b
+
+( become , for higher privileges on managed nodes like root user '-b')
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+install git in all the managed nodes:-
+
+
+$ ansible all -m apt -a 'name=git state=present' -b
+
+
+Observation:
+
+we get "changed": false
+
+(that means git is already installed on it. the command has no effect in the node)
+
+now , run the below command
+
+$ ansible all -m apt -a 'name=git state=absent' -b
+
+(absent means = uninstall )
+
+output, we get in yellow color 
+
+(scroll up) we get " changed " : true
+
+(the command is effected the instance )
+
+now if we run this below command (with present option)
+
+$ ansible all -m apt -a 'name=git state=present' -b
+
+we get "change" : true
+
+notes;
+
+apt module -- this is used for package management.
+
+1. ansible all -m apt -a 'name=git state=present' -b
+
+state=present is for installation
+state=latest for upgradation
+state=absent for uninstallation
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+i want update the all the repository and install tomcat8
+
+$ ansible all -m apt -a 'name=tomcat8 state=present update_cache=yes' -b
+
+the above command will update apt repository and install tomcat8
+
+to update apt-repository  on managed nodes update_cache=yes is used
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+file module:-
+
+this is used to create files and folders on managed nodes
+
+$ ansible all -m file -a 'name =/tmp/file5 state=touch'
+
+to check the file which create
+
+$ ssh private_ip_of_node
+
+$ cd /tmp
+
+$ ls
+
+$ exit
+
+
+
+To create a directory
+
+$ ansible all -m file -a 'name=/tmp/dir1 state=directory'
+
+
+to check the file which create
+
+$ ssh private_ip_of_node
+
+$ cd /tmp
+
+$ ls
+
+$ exit
+
+
+To delete the file
+
+$ ansible all -m file -a 'name =/tmp/file5 state=absent'
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Note:-
+
+command to create a file all managed nodes
+
+$ ansible all -m file -a 'name =/tmp/file5 state=touch'
+
+
+state=touch is to create file
+state=directory is to create directory
+state=absent is for deleting file/directory
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Now ,
+
+to know the current user 
+
+$ whoami
+
+$ ansible all -m file -a 'name =/tmp/file1  state=touch'
+
+now go to managed nodes and check the permissions of the file
+
+$ ssh private_ip_of_node
+
+$ ls -l file1
+
+observer the permissions are rw-rw-r--
+
+
+now , i want to change the permissions from controller
+
+
+$ exit ( back to controller mechine )
+
+$ ansible all -m file -a 'name =file1 state=touch owner=siva group=krishna mode=700' -b
+
+the above command will execute only if siva user and krishna group is available in all nodes.
+
+
+note:
+file module can be used to change the ownership, group ownership and permisssions on the file.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+copy module:-
+-------------
+this is used for copying the file from controller into managed nodes.
+
+we know in the file /etc/passwd we have all the information about users
+
+now i want to copy the file into all nodes
+
+$ ansible all -m copy -a 'src=/etc/passwd dest=/tmp'
+
+to check the file which is copies
+
+$ ssh private_ip_of_node
+
+$ cd /tmp
+
+$ ls
+
+$ exit
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+scenario: 
+
+i want to create tomacat user file in controller and copy the file in all the nodes
+
+$ sudo vim tomcat-users.xml
+
+go to insert mode
+
+
+<tomcat-users>
+ <user username="siva" password="Siva@1234" roles="manager-scripy"/>
+<tomcat-users>
+
+:wq
+
+
+$ ansible all -m copy -a 'src=tomcat-user.xml dest=/etc/tomcat8' -b
+
+
+To check file got created or not
+
+$ ssh private_ip_of_node
+
+$ cd /etc/tomcat8
+
+$ ls
+
+open that file to check the content
+
+$ sudo cat tomcat-user.xml
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+create a file in the controller mechine
+
+$ cat > newfile1
+
+hisaah 
+ahka]auskdb
+ajidsifa
+abksdkf
+
+ctrl + d
+
+$ ls -l newfile1
+
+we get the permissions
+
+rw-rw-r--
+
+when we copy the file we have the same permissions
+
+$ ansible all -m copy -a 'src=newfile1 dest=/home/ubuntu'
+
+to got managed node and check the permissions on the file.It remains the same
+
+$ ssh  private_ip
+
+$ ls -l newfile1
+
+$ exit
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+fetch module:-
+-------------
+
+featch the data from the managed nodes to controlle node.
+
+go to managed node 
+
+$ ssh private_ip_node
+
+$ cd /etc/tomcat8
+
+$ ls
+
+there is a server.xml file
+
+i want to get the file (server.xml) from node to controller
+
+$ exit
+
+$ ansible all -m fetch -a 'src=/etc/tomcat8/server.xml dest=/temp' -b
+
+
+lets check the fetch or not
+
+$ cd /temp
+
+$ ls
+
+fetch the server.xml file from the nodes 
+
+but here problem is name (server.xml) from the all nodes saved with this name so when we fetch the file to controller mechine here save as a ip_address of the nodes.
+
+
+$ cd 172.31.35.102
+
+$ ls
+
+$ cd etc
+
+$ ls
+
+$ cd tomcat8
+
+$ ls
+
+note:-
+
+fetch module is used to copy files from managed nodes to controller.
+
+command to copy tomcat-server.xml file from all managed nodes into /temp folder on the controller.
+
+$ ansible all -m fetch -a 'src=/etc/tomcat8/server.xml dest=/tmp' -b
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+git module:-
+-------------
+
+this is used to perform git version controlling on the managed nodes.
+
+$ ansible all -m git -a 'repo=https://github.com/sunildevops77/repo1.git dest=/temp/mygit' -b
+
+the above command will download the file in all managed nodes.
+
+go to managed node and check
+
+$ ssh 172.31.35.79
+
+$ cd /temp
+ 
+$ cd mygit
+
+$ ls
+
+$ exit
+
+
+note:-
+
+ansible command to clone remote git repository into all managed nodes
+
+
+$ ansible all -m git -a 'repo=https://github.com/sunildevops77/repo1.git dest=/temp/mygit' -b
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+service module:-
+---------------
+
+this is used for starting / stoping / restarting the service.
+
+ansible command to restarting tomcat8 on all managed nodes
+
+$ ansible all -m service -a 'name=tomcat8 state=restarted' -b
+
+
+state=restarted is for restarting a service
+
+state=stopped is for stoping a running service
+
+state=started is for  starting a stopped service
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+replace module:-
+--------------
+
+go to managed node
+
+$ ssh 172.31.15.33
+
+$ cd /etc/tomcat8
+
+$ ls
+
+$ sudo vim server.xml
+
+
+look for connector port, to see the port number in which it is running.(line 74)
+
+now we want to change the port number on all managed nodes, in this scenario we use replace module.
+
+quit the server.xml file
+
+$ exit (come back to controller machine)
+
+$ ansible all -m replace -a 'regexp=8080 replace=9090 path=/etc/tomcat8/server.xml' -b
+
+
+let's check the tomcat is responding on 9090 port in managed nodes
+
+get public DNS from aws
+
+or
+
+public_ip_node:9090
+
+check in browser
+
+we will not get the page, because we need to restart the service
+
+$ ansible all -m sevice -a 'name=tomcat8 state=restartd' -b
+
+now , try the above URL --it wrorks!!
+
+
+replace module:-
+---------------
+
+this is used for replacing a specific string with other string.
+
+ex;
+
+ansible command to change the port number of tomcat from 8080 to 9090
+
+$ ansible all -m replace -a 'regexp=8080 replace=9090 path=/etc/tomcat8/server.xml' -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+URI module:-
+----------
+
+i want to check facebook is reachable for not in all managed nodes.
+
+$ ansible all -m uri -a 'url=http://facebook.com'
+
+in the output (green colour) status - 200
+
+give a invalid url , we get status as - 1
+
+ex:
+now i give the invalid url it shows error
+
+$ ansible all -m uri -a 'url=http://hgja.com'
+
+
+now i want to stop tomcat in all managed nodes 
+
+$ ansible all -m service -a 'name=tomcat8 state=stoped' -b
+
+
+note:
+
+URI  module is used to check if the url is rechable or not.
+
+command to check if facebook.com is reachable on all managed nodes.
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+let's have an example of all modules
+
+ 
+ex;
+
+i want to install tomcat all the managed nodes, than i want to copy user.xml in all managed nodes, i want to change port number of tomcat, then i want to restart the service finally i want to check url is reachable or not.
+
+1st we need to uninstall tomcat in all the nodes.
+
+$ ansible all -m apt -a 'name=tomcat8 state=absent purge=yes' -b
+
+
+$ ansible all -m apt -a 'name=tomcat8 state=present' -b
+
+$ ansible all -m copy -a 'src=tomcat-user.xml dest=/etc/tomcat8' -b
+
+$ ansible all -m replace -a 'regexp=8080 replace=9090 path=/etc/tomcat8/server.cml' -b
+
+$ ansible all -m service -a 'name=tomcat8 state=restarted' -b
+
+
+to check tomcat is running individually on all servers,
+
+take the private ip of all nodes
+
+172.31.11.96
+172.31.6.207
+172.31.12.138
+
+
+$ ansible all uri -a 'url=http://172.31.11.96:9090'
+
+it returns status as 200
+
+similarly check the other two nodes
+
+$ ansible all uri -a 'url=http://172.31.6.207:9090'
+
+$ ansible all uri -a 'url=http://172.31.12.138:9090'
+
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+play books:-
+----------- 
+
+adhoc commands are capable of working only on one module and one set of argunets.when we want to perform complex configuration management activities,
+
+adhoc commands will be difficult to manage.
+
+in such scenarios we use playbooks.
+
+play book is combination of plays.
+
+each play is designed to do some activity on the managed nodes.
+
+these plays are created to work on single host or a group of hosts or all the hosts.
+
+the main advantage of play book is reusability.
+
+play book are created using yaml file.
+
+
+$ mkdir playbook
+
+$ cd playbook
+
+$ vim playbook1.yam
+
+insert mode
+
+---
+name: installing git and clone a remote repository
+host: all
+task:
+  - name: install git
+    apt:
+      name: git
+      sate: present
+      update_cache: yes
+  - name: clone remote git repository
+    git:
+      repo: https://github.com/sunilkumar11/git-9am-batch.git
+      dest: /home/ubuntu/newgit
+...
+
+
+
+to check the syntax:
+
+$ ansible-playbook playbook1.yml --syntax-check
+
+(do not use tab when create yml file)
+
+to run the playbook
+
+$ ansible-playbook playbook1.yml -b
+
+
+
+let's check the nodes git installed are not 
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 nd example:-
+-------------
+
+create user on all managed nodes and i want to copy passwd file
+
+$ vim playbook2.yml
+
+---
+- name: create user and copy passwd file
+  hosts: all
+  tasks:
+   - name: user creation
+     user:
+      name: siva
+      password: sivaiah
+      uid: 6779
+      home: /home/siva
+   - name: copy password into users home dir
+     copy:
+      src: /etc/passwd
+      dest: /home/siva
+... 
+
+save & quit
+
+
+to check the syntax:
+
+$ ansible-playbook playbook2.yml --syntax-check
+
+to run
+
+$ ansible-playbook playbook2.yml -b   
+
+to check the user is created in managed nodes:
+
+$ ssh 172.31.2.173
+
+$ vim /etc/passwd
+
+
+to check if passwd file is copied to /home/siva
+
+$ cd /home/siva
+
+$ ls
+
+$ exit
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ex3;
+
+playbook to configure tomcat8 
+
+$ vim playbook3.yml
+
+---
+- name: configure tomcat8
+  hosts: all
+  tasks:
+   - name: install tomcat8
+     apt:
+      name: tomcat8
+      state: present
+   - name: copy tomcat-users.xml file
+     copy:
+      src: /home/ubuntu/tomcat-user.xml
+      dest: /etc/tomcat8
+   - name: change port of tomcat from 8080 to 9090
+     replace:
+      regexp: 8080
+      replace: 9090
+      path: /etc/tomcat8/server.xml
+   - name: restart tomcat8
+     service:
+      name: tomcat8
+      state: restarted
+   - name: check url response of server 1
+     uri:
+      url: http://172.31.7.134:9090
+   - name: check url response of server 2
+     uri:
+      url: http://172.31.7.135:9090
+...
+
+$ ansible-playbook playbook3.yml --syntax-check
+
+$ ansible-playbook playbook3.yml -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ex;
+
+install apache2 in all managed nodes, please our own content in defolt home page
+
+$ cd playbooks
+
+$ vim playbook4.yml
+
+---
+- name: configuring apache2
+  host: all
+  tasks:
+   - name: install apache2
+     apt:
+      name: apache2
+      state: present
+
+save & quit
+
+$ ansible-playbook playbook4.yml -b
+
+to check apache2 is installed
+
+$ ssh 172.31.12.329
+
+(homepage of apache2 is present in /var/www/html)
+
+$ cd /var/www/html
+
+$ ls
+
+we get index.html (this html file is defolt homepagee of apache )
+
+editing the index.html page
+
+this is possible using copy module.
+
+$ exit
+
+$ vim playbook4.yml
+
+
+---
+- name: configuring apache2
+  host: all
+  tasks:
+   - name: install apache2
+     apt:
+      name: apache2
+      state: present
+   - name: edit index.yml file
+     copy:
+      content: "welcome to playbooks\n"
+      dest: /var/www/html/index.html
+...
+
+
+save and quit
+
+$ ansible-playbook playbook4.yml -b
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+how to open url in terminal?
+
+by using elinks
+
+ex;
+
+$ elink http://google.com
+
+we get error (elink not found)
+
+let's install elinks
+
+$ sudo apt-get install -y elinks
+
+now run the command
+
+$ elinks http://google.com
+
+now we want to look at index.html file managed nodes
+
+$ elinks http://15.207.99.5 (managed node ip)
+
+after editiong the index.html file, i need to restart the service and check the url response
+
+$ vim playbook4.yml
+
+---
+- name: configuring apache2
+  host: all
+  tasks:
+   - name: install apache2
+     apt:
+      name: apache2
+      state: present
+   - name: edit index.yml file
+     copy:
+      content: "welcome to playbooks\n"
+      dest: /var/www/html/index.html
+...  
+
+
+exit  === :q
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+creating reusable playbooks using variables
+
+3 types of variables
+
+1. global scope variables (highest priority)
+-we pass values from command prompt
+
+2. host scope variables
+
+3. play scope variables (least priority)
+
+
+
+ex;
+
+ of global scope variables
+
+$ vim playbook5.yml
+
+---
+- name: install software packages
+  host: all
+  tasks:
+   - name: install/uninstall/update etc
+     apt:
+      name: tree
+      state: present
+      update_cache: yes
+...
+
+if we run the above playbook 10 times, what appaends? tree packkage will install 10 times.
+
+we make small changes to the above code
+
+$ vim playbook5.yml
+
+---
+- name: install software packages
+  host: all
+  tasks:
+   - name: install/uninstall/update etc
+     apt:
+      name: "{{a}}"
+      state: "{{b}}"
+      update_cache: "{{c}}"
+...
+
+to run the playbook by passing values to the variables
+
+$ ansible-playbook playbook5.yml --extra-vars "a=git b=absent c=no" -b
+
+(the above command will uninstall git from all nodes)
+
+run the same playbook with diffrent values
+
+$ ansible-playbook playbook5 --extra-vars "a=tree b=present c=no" -b
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+let's discuss play scope variables
+
+playscope variable are defined within the playbook and they can effect only in one single play.
+
+Ex;
+
+$ vim playbook7.yml
+
+---
+- name: using play scope variable
+  hosts: all
+  vars:
+    - a:tomcat8
+    - b:present
+    - c:no
+  tasks:
+    - name: install tomcat8
+      apt:
+        name: "{{a}}"
+        state: "{{b}}"
+        update_cache: "{{c}}"
+...
+ 
+
+$ ansible-playbook playbook7.yml -b
+
+(it will install tomcat8)
+
+we can run using extra vars from command line 
+
+$ ansible-playbook playbook7.yml --extra-vars "a=tree b=present c=no" -b
+
+the above command will install tree because global scope variable have higher priority
+
+note:
+
+playscope variables
+
+these variable are definied at level of individual plays and they can effect only one play.
+
+Ex;
+
+---
+- name: using play scope variable
+  hosts: all
+  vars:
+    - a:tomcat8
+    - b:present
+    - c:no
+  tasks:
+    - name: install tomcat8
+      apt:
+        name: "{{a}}"
+        state: "{{b}}"
+        update_cache: "{{c}}"
+...
+
+note:
+
+the above playbook works like a template, who's default behaviour is to install tomcat8
+
+but we can by pass that behaviour and make it work in some other software by passing the variables as extra vars
+
+$ ansible-playbook playbook7.yml -b --extra-vars "a=tree b=present c=no" -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+host scope variables
+
+lets create one more managed node.
+
+so, we will have 1 controller 4 nodes.
+
+in step6 --add rule -- traffic -- anywaere
+
+check the version in the node
+
+$ python3 --version
+
+we need to downgrade the machine from python3 to python2
+
+to downgrade 
+
+$ sudo apt-get update
+
+$ sudo apt-get dist-upgrade (it will point to older apt repository where python2 is available )
+
+$ sudo apt-get install -y python2.7 python-pip
+
+now check the version of python
+
+$ python --version
+
+Establish password less ssh connection 
+
+$ sudo passwd ubuntu
+
+(give the passwd)
+
+$ sudo vim /etc/ssh/sshd_config
+
+change
+
+password authentication yues
+
+save and quit
+
+$ sudo service ssh restart
+
+$ exit
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+now, connect to controller
+
+now, we need to generate ssh connections
+
+$ ssh-keygen
+
+now copy the key to managed nodes
+
+$ ssh-copy-id ubuntu@172.32.81.351 (private_ip_node4)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+now, we need to add the information of managed node in the inventory file
+
+location of inventary file /etc/ansible
+
+$ cd etc/ansible
+
+$ ls
+
+$ sudo vim hosts
+
+insert the private ip adress of 4 th node
+
+save and quit
+
+$ ansible all -a 'ls -al'
+
+(you will get the list of the diles in all managed nodes)
+
+$ ansible all 'free'
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+we can do grouping using [group name]
+
+EX;
+
+to do grouping
+
+$ sudo vim hosts
+
+
+[webserver]
+
+172.35.45.69
+
+172.35.45.70
+
+[appserver]
+
+172.13.56.89
+
+[dbserrver]
+
+172.566.456.55
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+$ ansible appserver -a 'free'
+
+it showes only one mechine
+
+[appserver]
+
+172.13.56.89
+
+$ ansible webserver -a 'free'
+
+it showes the two server
+
+[webserver]
+
+172.35.45.69
+
+172.35.45.70
+
+
+$ ansible all -a 'free'
+
+it showes all the nodes
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+host scope variables:-
+---------------------
+
+these variables are calssified into 2 types
+
+1. variables to work on group of hosts.
+
+2. variables to work on single hosts.
+
+variables to work on group of hosts:-
+-----------------------------------
+
+these variables are designed to work on group of hosts.
+
+they are defined in a folder called group_var
+
+this group_var folder should be present in the same folder where all the playbooks are present.
+
+in this group_var folder, we should create a file who's name is same as group_name in inventory file.
+
+in this file we create variables.
+
+variable which works on group of hosts
+
+$ cd (enter)
+
+$ cd playbooks
+
+$ ls
+
+varibles which work in group of hosts are divided into two types
+
+1. variables which works in group of machines
+
+2. variables which works on one machine
+
+
+1. variables which works in group of machines:-
+----------------------------------------------
+
+playbooks $ mkdir group_var
+
+note; group_var folder should be present in the same location of playbook files.
+
+$ cd group_var
+
+$ vim webserver
+
+
+a: siva
+b: logic
+c: /home/siva
+d: 67890
+e: /bin/bash
+
+save and quit
+
+
+$ cd ..
+
+playbooks $ vim playbook8.yml
+
+
+---
+- name: using host scope variables
+  hosts: webserver
+  tasks:
+   - name: user creation
+     user:
+      name: "{{a}}"
+      password: "{{b}}"
+      home: "{{c}}"
+      uid: "{{d}}"
+      shell: "{{e}}"
+...
+
+save & quit
+
+to run the playbook
+
+$ ansible-playbook playbook8.yml -b  (it runs on two mechines)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+let's add few more variables
+
+$ cd group_vars
+
+$ vim webserver
+
+a: siva
+b: logic
+c: /home/siva
+d: 67890
+e: /bin/bash
+f: tree
+g: present
+h: no
+
+save & quit
+
+
+$ cd ..
+
+$ vim playbook9.yml
+
+
+---
+- name: using host scope variables
+  host: webserver
+  tasks: 
+   - name: install software
+     apt: 
+      name: "{{f}}"
+      state: "{{g}}"
+      update_cache: "{{h}}"
+...
+
+$ ansible-playbook playbook9.yml -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+2. variables which work on one single mechine:-
+----------------------------------------------
+
+these variables are designed on single machine.
+
+that are creates in folder called host_vars
+
+this host_vars folders should be created in the same location of where the playbooks are present.
+
+playbooks $ mkdir host_vars
+
+$ cd host_vars
+
+$ vim 172.45.45.55 (private IP of server)
+
+
+a: firewalld
+b: present
+c: yes
+
+save and quit
+
+$ cd ..
+
+$ vim playbook10.yml
+
+
+---
+- name: use host scope variables
+  hosts: 172.45.45.55
+  tasks:
+   - name: install firewall
+     apt:
+      name: "{{a}}"
+      state: "{{b}}"
+      update_cache: "{{c}}"
+...
+
+save and quit
+
+$ ansible-playbook playbook10.yml -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Implementing loops:-
+-------------------
+
+note; modules in ansible can be executed multiple times using loops.
+
+
+ex; playbook to install diffrent s/w packages
+
+$ vim playbook11.yml
+
+---
+- name: install software packages
+  host: webserver
+  tasks:
+   - name: install software
+     apt:
+      name: "{{item}}"
+      state: present
+      update_cache: no
+     with_items:
+     - tree
+     - git
+     - default-jdk
+     - apache2
+...
+
+$ ansible-playbook playbook11.yml -b
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+requirements:
+
+tree needs to be installed
+git needs to be uninstalled
+jdk needs to be updated
+apache needs to be installed and updated cache
+
+
+$ cd playbooks
+
+$ vim playbook12.yml
+
+---
+- name: install software packages
+  hosts: webserver
+  tasks:
+  - name: install software
+    apt:
+     name: "{{item.a}}"
+     state: "{{item.b}}"
+     update_cache: "{{item.c}}"
+    with_item:
+    -{a: tree,b: present,c: no}
+    -{a: git,b: absent,c: no}
+    -{a: default-jdk,b: absent,c: no}
+    -{a: apache2,b: present,c: yes}
+...
+save and quit
+
+$ ansible-playbook playbook12.yml -b
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Ex;
+
+for working on multiple modules with multiple with_items.
+
+requirement: to create multiple users and files / directories in user's home directories.
+
+$ vim playbook13.yml
+
+---
+- name: create user and create files / dir in users home dir
+  hosts: all
+  tasks: 
+   - name: create multiple users
+     user:
+      name:"{{item.a}}"
+      password: "{{item.b}}"
+      home: "{{item.c}}"
+     with_items:
+      -{a: krishna,b: krishna@123,c: /home/krishna}
+      -{a: siva,b: siva@123,c: /home/ubuntu/siva}
+   - name: creating files and directories in users home dir
+     file:
+      name: "{{item.a}}"
+      state: "{{item.b}}"
+     with_items:
+     -{a: /home/krishna/file1,b: touch}
+     -{a: /home/ubuntu/siva/dir1,b: directory}
+...
+
+save and quit
+
+$ ansible-playbook playbook13.yml -b
+
+
+-----------------------------------
+go and check the user got created are not.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Handlers:-
+---------
+
+handler is a piece of code which is executed,if some other module is executed successfully and it has made some changes.
+
+handlers are always executed only after all the tasks are executed.
+
+handlers are executed in the order that are mentioned in the handler section, and not in the order they are called in the tasks section.
+
+even if handler is called multiple times in the tasks section, it will be executed only once.
+
+
+requirement:-
+------------
+
+
+$ vim playbook14.yml
+
+
+---
+- name: confugure apache2 using handlers
+  hosts: all 
+  tasks:
+   - name: install apache2
+     apt:
+      name: apache2
+      state: present
+   - name: edit index.html file
+     copy:
+      content: "sivaiah\n"
+      dest: /var/www/html/index.html
+     notify: restart apache2
+  handlers:
+   - name: restart apache2
+     service:
+      name: apache2
+      state: restarted
+...
+
+$ ansible-playbook playbook14.yml -b
+
+
+
+NOTE;
+
+as editing the index.html file is successfull, handler is executed.
+
+if you re run the playbook, handler is not executed.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Error Handling :-
+---------------
+
+if any module fails in ansible, the execution of the playbook terminates over there.
+
+when we know that certain module might fail, and still we want to continue playbook execution, we can use error handling.
+
+the section of code which might generate an error should be given in block section.
+
+if it generates an error, the control comes to reascue section.
+
+always section is executed every time irespective of wether the block is successfull of failure.
+
+
+
+$ vim playbook15.yml
+
+---
+- name: error handling
+  hosts: all
+  tasks:
+   - block:
+     - name: install apache1
+       apt:
+        name: apache1
+        state: present
+       rescue:
+        - name: install apache2
+          apt:
+           name: apache2
+           state: present
+       always:
+        - name: check url response
+          uri:
+           url: "{{item}}"
+          with_items:
+          - http://172.56.56.66 (private ip of nodes)
+          - http://172.56.56.65
+          - http://172.56.56.64
+          - http://172.56.56.63
+...
+
+
+$ ansible-playbook playbook15.yml -b
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+

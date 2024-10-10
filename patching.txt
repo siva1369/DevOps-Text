@@ -1,0 +1,19 @@
+linux server patching:-
+-----------------------
+
+patch management tools
+
+big fix
+
+rpc
+
+ansible
+
+pupet
+
+cheff
+
+sccm for windows
+
+
+

@@ -1,0 +1,239 @@
+
+
+https://github.com/Cloud-Yeti/aws-labs/tree/master/terraform-aws
+
+
+how to configure the terraform in windows mechine
+
+1. go with google chrome "terraform.io"
+
+download the terraform file for windows (download 386) which is .exe file 
+
+
+2. extract the terraform.exe file
+
+
+3. setup the path for terraform
+
+create a new folder with name terraform in C:/program files
+
+copy the terraform.exe file in this terraform folder
+
+copy the path of the folder in your note pad
+
+in windows we have a option called edit environment veriables 
+>> environment variable 
+>> select the path option 
+>> edit 
+>> take new and paste the path
+
+>> click ok ...>> ok..
+
+close and open the CMD...
+
+
+4. in CMD type "terraform version"
+
+here it will show the terraform version
+
+
+
+5. go to registroy.terraform.io
+
+
+6. create a file in terraform folder with extention .tf
+
+copy the providers code into this file
+
+
+
+example:--
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+
+$ terraform plan
+
+$ terraform apply
+
+
+than....
+
+
+
+7. initialise the terraform 
+
+$ terraform init
+
+now you initilised the terraform you got some normla and hiden files
+
+$ ls
+
+$ ls -la
+ 
+now you can able to see the file 
+
+if you try to exicute this command 
+
+$ terraform plan 
+
+here show ... their is no plan to exicute....so you shoud write some script...
+
+ 
+
+8. link the our aws account 
+
+so  first we need create the user in aws console, user should have administator access.
+
+save the access key and secret access key
+
+now we add the below creadintials in .tf file
+
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "AKIAT2QKA3WJRXCVEACY"
+  secret_key = "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"
+}
+
+
+$ terraform plan
+
+$ terraform apply
+
+
+
+9. create the instance by using terraform..
+
+write the bellow code in .tf file
+
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "AKIAT2QKA3WJRXCVEACY"
+  secret_key = "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"
+}
+
+
+resource "aws_instance" "server_1" {
+  ami           = "ami-0be0a52ed3f231c12"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "server-1"
+  }
+}
+
+
+
+execute the below commands
+
+$ terraform plan
+
+$ terraform apply
+
+
+## for destroy the infrastructure
+
+$terraform destroy
+
+
+
+terraform commands:-
+----------------------
+
+terraform init
+
+terraform plan
+
+terraform validate
+
+terraform apply
+
+terraform destroy
+
+
+
+/documents/terraform/dir1
+
+
+
+
+1. provider 
+
+2. authontication & configuration
+
+3. resource
+
+
+
+
+
+
+
+
+
+
+
+
+
+for azure templates:-
+--------------------
+
+
+
+# Configure the Azure provider
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0.2"
+    }
+ 
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "rg" {
+  name     = "myTFResourceGroup"
+  location = "westus2"
+}
+
+
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.0.0"
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+
+  client_id       = "00000000-0000-0000-0000-000000000000"
+  client_secret   = var.client_secret
+  tenant_id       = "10000000-0000-0000-0000-000000000000"
+  subscription_id = "20000000-0000-0000-0000-000000000000"
+}
+
+
+

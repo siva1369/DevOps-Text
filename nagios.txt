@@ -1,0 +1,135 @@
+NAGIOS :-
+-------
+
+It is a monitoring tool .
+
+CPU utilization, RAM utilization , network band width
+
+
+create two aws instances.
+
+1st machine -- install nagios
+2nd machine -- remote server which will be monitored.
+
+in step 6 : add security group
+
+add 3 rules
+
+-- custom TCP  == anywhere
+--  HTTP       == anywhere
+-- custom ICMP V4  == anywhere
+
+1 st machine name it as -- nagios_server
+2 nd machine name it as -- server1
+
+
+==========================================================================================
+
+Installation of nagios:-
+-------------------------
+
+open git bash connect to 1 st server (nagios_server)
+
+update the repository
+
+$ sudo apt-get update
+
+install nagios 3
+
+$ sudo apt-get install nagios3
+
+
+use tab button
+
+ok --- ok --- system mail name :(just ok)
+
+nagios administration password - siva
+
+to check the nagios installed or not
+
+got to the aws machine 
+select the public DNS
+
+public DNS / nagios3
+
+
+defolt user name == nagiosadmin
+password  == siva
+
+=============================================================================================
+
+in nagios gui select service
+currently we found only local host
+
+------------------------------------------------
+to add remote server to nagios
+
+go to gitbash
+
+$ sudo vi /etc/nagios3/nagios.cfg
+check_external_command=1 (line 145)
+
+there we can able to see the zero chenge to one
+
+
+:wq
+
+$ sudo vi /etc/group
+nagios:x:119:www.data (line 58)
+
+give some permissions
+
+$ sudo chmod g+W /var/lib/nagios3/rw
+
+$ sudo chmod g+w /var/lib/nagios3
+
+$ sudo service apache2 restart
+
+$ sudo service nagios3 restart
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+configuring remote server on nagios
+
+$ cd /etc/nagios3/conf.d/
+
+$ ls (we can see the configuration files)
+
+create a new file
+
+$ sudo vim server1.cfg
+
+(in google - adding server to nagios urban penguin)
+URL= https://www.theurbanpenguin.com/nagios-defining-anew-host/
+
+define host {
+  host_name <public DNS >
+  alias <name>
+  address <private_ip>
+  max_check_attempts 3
+  check_period 24x7
+  check_command check-host-alive
+  contacts root
+  notification_interval 60
+  notification_period 24x7
+}
+
+from this site we can get some data to creating for cfg file
+
+host_name == public DNS
+address  == private_ip
+
+restart nagios3
+
+$ sudo /etc/init.d/nagios3 restart
+
+go to nagios home page and refresh
+select host groups
+we can see the new host.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+

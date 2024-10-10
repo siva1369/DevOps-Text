@@ -1,0 +1,172 @@
+LAMP SETUP IN UBUNTU
+
+LINUX
+
+APACHE
+
+MYSQL
+
+PHP
+
+WORDPRESS
+
+first setup the LAMP than top of the LAMP install the wordpress.
+
+1. create EC2 
+2. install apache2
+3. install mysql servers
+4. install php server (first add the repository than install php)
+
+
+
+
+
+install apache
+
+
+$ sudo apt-get install apache2 -y
+
+$ sudo service apache2 status
+
+install mysql
+
+$ sudo apt-get install mysql-server -y
+
+$ sudo add-apt-repository ppa:ondrej/php
+
+$ sudo apt-get install php7.3
+
+$ php -v
+
+$ sudo apt install php7.3-cli php7.3-fpm php7.3-pdo php7.3-mysql php7.3-zip php7.3-gd php7.3-mbstring php7.3-curl php7.3xml php7.3-bcmath php7.3-json -y
+
+$ sudo mysql_secure_installation
+
+press : y
+
+strong : 0
+
+new password:
+
+re-enter new password:
+
+give all "y" and enter .... enter
+
+all done.
+
+to enter into sql
+
+$ sudo mysql
+
+or
+
+# mysql
+
+than 
+
+exicute these commands
+
+
+mysql> create database bitnami_wordpress;
+
+mysql> CREATE USER 'bn_wordpress'@'localhost' IDENTIFIED BY'45bee7e8ac';
+
+mysql> GRANT ALL ON bitnami_wordpress.* TO 'bn_wordpress'@'localhost' IDENTIFIED BY'45bee7e8ac';
+
+Give premission to user
+
+mysql> SELECT DISTINCT User FROM mysql.user; (optinal)
+
+mysql> FLUSH PRIVILEGES;
+
+mysql> exit
+
+
+install wordpress
+
+$ wget -c http://wordpress.org/latest.tar.gz
+
+$ sudo tar -xzvf latest.tar.gz
+
+$ sudo rsync -av wordpress/* /var/www/html/
+
+$ cd /var/www/html/
+
+$ sudo chown -r www-data:www-data /var/www/html/
+
+$ sudo service apache2 restart
+
+basically we get wordpress but we get apache this have some error
+
+$ cd /var/www/html/
+
+$ sudo mv index.html index.html.bkp
+
+$ sudo service apace2 restart
+
+now we get wordpress
+
+select english
+
+ 
+database name = bitnami_WordPress 
+
+username = bn_wordpress
+
+password = 45bee7e8ac
+
+database host =
+
+table prefix =
+
+submit
+
+
+information needed
+
+site title = carrier
+
+username = carrier
+
+password = 
+
+your email =
+
+search engine =
+
+>>instal
+
+
+
+note;
+
+platform as a service
+
+infrastructure as a service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                             

@@ -1,0 +1,71 @@
+AWS LIGHT SAIL:-
+--------------
+
+it is a platform as a service (PAAS)
+
+
+here avilable 
+
+1. app + OS
+
+2. OS
+
+first create the instance what we want
+
+
+for example we are lanch the instance with wordpress
+
+when the wordpress is running .. take the IP past it in the chrome we will get the wordpress welcome page
+
+
+for login admin page 
+
+in chrome
+
+IP/wp-login.php
+
+
+here ask the user name and password
+
+for the credintials we need to connect the machine cli
+
+$ cat bitnami_credentials
+
+here we can able to see user name and password
+
+take the credintials and give the credintials in the WordPress login page
+
+
+the wordpress was created......
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+static ip (or) elastic ip / dynamic ip
+
+these ip's are public ip's
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

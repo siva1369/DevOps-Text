@@ -1,0 +1,430 @@
+git
+------------
+git is a version controlling tool and SCM TOOL
+
+1.centralized version controlling
+2.distributed version controlling
+
+git is a distributed version controlling tool
+
+it  is a open sourse tool
+
+where the source coad is saved is called working directory
+
+by using this command we can change the folder to working directory
+
+$ git init
+
+go to source coad directory right cllick select git bash
+
+than change to working directory
+
+$ git init
+
+
+after this command we have to two observations 
+
+1. branching 
+2. in the source coad folder automatically created .git 
+
+git default branch is "master"
+
+git bash is terminal provided by git for run git commands
+
+
+git configuration is a one time processs
+
+$ git config --global user.name "anyname"
+
+$ git config --global user.email "give email"
+
+
+
+To check the confirmation
+
+$ git config --global --list
+
+
+
+types of files
+
+as per git we have 3 types
+
+1. untracked files
+2. staged file
+3. commited file
+
+moving the untracked section to staging area
+
+$ git add file name
+
+for moving all files into sinlge step
+
+$ git add .
+
+
+
+for file status 
+
+$ git status
+
+
+files will moving staging area to local repository
+
+$ git commit
+
+$ git commit -m "any message"
+
+-m == give some messages
+
+ 
+
+git architecture is
+
+untracked section --> staging area --> local repository
+
+
+for example if we want to bring back to staging area to untracked section 
+
+$ git restore --staged <file name>
+
+
+
+for see all commits
+
+$ git log
+
+$ git log --oneline
+
+
+head is latest commit
+
+
+
+Branching:-
+
+devolopers are working on multiple functionalitys to avoid the clumsy of confusion we are using a branching
+
+
+for create new branch
+
+$ git branch name
+
+
+how to list of all the branches
+
+$ git branch
+
+
+change into one branch to another branch
+
+$ git checkout branchname
+
+
+To merge child branch to parent branch
+
+we need to present in parent branch
+
+$ git merge child branch name
+
+vi editor will open
+
+:q  --> enter
+
+
+
+understanding of .gitignore files
+
+.class files for understanding for compilers
+in local system
+
+for example in untracked section we have 10 files but it will commit 5 files because .class files will be ignore .file for compilation
+
+for that we are creating .gitignore file
+
+$ vi .gitignore 
+
+insert i
+
+*.class
+
+:wq
+
+all class files are machine genareted files
+
+
+
+Rebase:-
+
+this is called as a fast-forward merge.
+
+the commits from the child branch are added to the top of the master branch.
+
+this is helpful when we want code from a branch to be reflected as the latest working version on master. 
+
+
+in the child branch we can rebase the parent branch
+
+
+pointing to child branch
+
+$ git checkout child branch
+
+
+$ git rebase master
+
+
+
+after rebase the branch than merge from master branch
+
+$ git checkout master  
+
+$ git merge child branch
+
+
+$ git log --oneline
+
+
+
+re arranging the commit history:-
+
+
+for example we have a commits like this series   a b c d e
+
+but clint wants to   a d c e b
+
+we can not change the first commit
+
+
+out of 5 commits we can change the commit order
+ 
+
+$ git rebase -i HEAD~4
+
+
+just copy and past
+
+
+
+
+how to merge the commits
+
+commit is knothing but a milestone for the developer
+
+we can not remove the first commit
+
+$ git rebase -i HEAD~4
+
+remove the "pick" word and replace it with "squash"
+
+
+how to selectively pickup the commits from the child branch to master branch
+
+$ git cherry-pick (commit id's)
+
+these are latest commits
+
+
+
+git stash:- storing secretly
+
+
+this feature is used for leaving unfinished work ,in such a way that git cannot access it and continue work on some other files.
+
+
+git stash is for staged files...when we are doing stash the staged files going to hidden
+
+for stash
+
+$ git stash
+
+
+for unstash
+
+$ git stash pop
+
+
+git stash is for only staged files but i want to both untracked files and staed files are going to hidden for that 
+
+$  git stash -u
+
+
+
+git ammend:-
+
+for example we have one file f1 it is commited "a" but the developer want to change the coad in file f1 normally if we commit it it will goes to another commit like "b" but we want to commit in same "a" commit in this case we have ammend
+
+$ git add .
+
+
+$ git commit --amend -m "a"
+
+
+
+
+version controlling :-
+
+clint wants to previous version
+ 
+
+$ git reset --hard (commit id)
+
+
+git == tool
+git hub == remote repository
+git bash == terminal
+
+
+git hub account 
+
+create new repository 
+
+take push commands from that 
+
+exicute in git bash
+
+
+
+
+
+
+github error 
+
+https://www.programmersought.com/article/10284558358/
+
+ssh-keygen -t rsa -c lapymail1369@gmail.com
+
+
+
+
+
+git config --global user.name "sivaiah.addanki"
+
+git config --global user.email "lapymail1369@gmail.com"
+
+git config --global --list
+
+mv ~/.gitconfig ~/.gitconfig_old
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,219 @@
+kubernetes:-  (K8S) cks cerificate
+-----------
+
+kubernetes is orchastration 
+
+orchastration is group of serves in singles network . maintain large data like big data
+
+
+in k8s files call it as minefest files
+
+
+
+pod
+
+deployment
+
+statefull cells
+
+diff bet ween deployment and statefull cells
+
+demon cell
+
+service's ( cluster ip, node pod, load balencer )
+
+config map
+
+network ingress
+
+ssl certificates
+
+
+
+advantages:-
+-----------
+
+container to container communication is very easy
+
+
+
+menifest file:- yml
+--------------
+
+apiversion: v1 or /v1 ( service's,config map,pod = v1 / deployments demon cells = /v1 )
+kind: (create one)
+metadata: (name)
+spec: (container configuration)
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+k8s nginx manifest this is a site 
+
+"k8slens.dev" this is a application for the way run the k8s
+
+we shoud install this application
+
+kube-forwarder.pixelpoint.io to download the kube forwarder
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+k8s etcd = for backup perpose key value storage
+
+shedular = shedule the pod destiny to node
+
+controller = controll the overall pod
+
+k8s api = this is the communication b/w kube ctl and kube let
+
+kube ctl =  command execute
+
+kube let = shedule the pods
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+we are create k8s using " eksctl " this is 3rd part tool
+
+
+eksctl integration :-
+--------------------
+
+
+first we need to create policy with there is a site called minimum IAM policies go through that and get json script.
+
+ec2 full access:-
+
+cloudwatch
+ec2
+ec2 auto scalling
+elb
+elb v2
+iam
+
+these policys are in the script
+
+
+cloud formation full accesss:-
+
+eks full access:-
+
+copy past the account id in the script
+
+iam limited access:-
+
+copy past the account id in the script
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+k8s cluster creation :-
+----------------------
+
+by defolt we should take managed node these are suported for auto scalling unmanageds node not supporting  for autoscalling.
+
+
+"aws eks autoscaller" browse in google follow the document
+
+
+list of the nodes
+
+$ kubectl get nodes 
+
+
+list of the pods
+
+$ kubectl get pods
+
+
+
+just follow the aws document.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

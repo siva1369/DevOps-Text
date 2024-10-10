@@ -1,0 +1,1291 @@
+ jenkins
+-------------
+
+jenkins is a CI/CD tool
+
+CI = continuous integration
+CD = continuous delivery
+
+
+jenkins is a self contained, open source automation server which can be used to automate all tasks related to building , testing and delivery activities.
+
+jenkins can be installed even on standalone be any  machine with a java runtime envirowment (JRE) installed 
+
+jenkins is a tool for implementing  CI-CD 
+
+
+CI = continuous integration
+
+step 1 = continuous download
+step 2 = continuous build 
+step 3 = continuous deployment
+step 4 = continuous testing 
+
+CD = continuous delivery
+
+step 5 = continuous delivery
+
+ 
+in any atmosphere like onprem or cloud
+
+for CI/CD we want to need three servers 
+
+1 . dev server
+2 . QA server (testing)
+3 . prod server 
+
+
+1. connect to dev server
+
+
+update the repository 
+
+$ sudo apt update
+
+
+install java
+
+$ sudo apt install openjdk-8-jdk -y
+
+
+To check the java installed or not
+
+$ java -version
+
+
+install git & maven 
+
+$ sudo apt-get install -y git maven
+
+
+check the git & maven installed or not 
+
+$ git --version 
+$ mvn --version
+
+
+install jenkins 
+
+jenkis.io from this sit copy the link
+
+$ wget https://get.jenkins.io/war-stable/2.346.1/jenkins.war
+
+ 
+the file got downloaded 
+
+$ ls
+
+Jenkins.war
+
+
+for starting Jenkins
+
+$ java -jar jenkins.war
+
+in the last we got one password copy that one
+
+open dev server take public IP the port number is 8080
+
+10.0.0.0:8080  like this 
+
+past it in chrome than we got jenkins page it will ask password past it 
+
+continue 
+
+go with suggested plugins
+
+ok
+
+create the credentials
+
+we got jenkins server
+
+when we stop the instance automatically jenkins will stoped
+
+
+
+how to run a simple job in jenkins
+
+select new item > give name > select freestyle project
+
+ok
+
+every job have 6 tabs
+
+go with build tab
+
+add build step
+
+excute shell 
+
+echo "hello jenkins"
+
+apply and save
+
+for run the job build now
+
+we got samole job experience
+
+
+
+2 . configuring the QA server
+
+ 
+connect the QA server 
+ 
+install tomcat 
+
+update repository 
+
+$ sudo apt-get update
+
+install tomcat8
+
+$ sudo apt-get install -y tomcat8
+
+after this we need to install one more package admin package
+
+$ sudo apt-get install -y tomcat8-admin
+
+let's check tomcat8 working or not
+
+public IP:8080  (in chrome)
+
+
+
+create a user in tomcat
+
+$ cd /etc
+
+$ ls
+
+$ cd tomcat8
+
+$ ls
+
+here we have tomcat-user.xml file
+
+$ vi tomcat-user.xml
+
+there is no permissions   (:q!)
+
+$ sudo vi tomcat-user.xml
+
+in the end tag </tomcat-users> before this tag
+
+
+<user username="anything" password="anyname" roles="manager-script,manager-status,manager-gui"/>
+
+:wq
+
+than restart tomcat
+
+$ sudo service tomcat8 restart
+
+we have configure the tomcat in QA instance
+
+
+
+3. now i will connect the prod server
+
+ 
+install tomcat 
+
+update repository 
+
+$ sudo apt-get update
+
+install tomcat8
+
+$ sudo apt-get install -y tomcat8
+
+after this we need to install one more package admin package
+
+$ sudo apt-get install -y tomcat8-admin
+
+let's check tomcat8 working or not
+
+public IP:8080  (in chrome)
+
+
+
+create a user in tomcat
+
+$ cd /etc
+
+$ ls
+
+$ cd tomcat8
+
+$ ls
+
+here we have tomcat-user.xml file
+
+$ vi tomcat-user.xml
+
+there is no permissions   (:q!)
+
+$ sudo vi tomcat-user.xml
+
+in the end tag </tomcat-users> before this tag
+
+
+<user username="anything" password="anyname" roles="manager-script,manager-status,manager-gui"/>
+
+:wq
+
+than restart tomcat
+
+$ sudo service tomcat8 restart
+
+we have configure the tomcat in prod instance
+
+for deployment we want to need a servers
+
+weblogic
+tomcat
+jboss
+webshere
+
+use any of these 
+
+
+now connect to dev server
+
+new job > freestyle project > give name > ok
+
+
+go to source  code management tab
+
+
+select git give repository url
+
+https://github.com/sunildevops77/maven.git
+
+applt and save
+
+run the job
+
+now go to build tab > add build step > invoke top-level maven target
+
+goals
+package
+
+run the job and check the console out put
+
+artifacts was be build
+
+
+than deploy the artifact to QA server for this we need to install "deploy to container" plugin
+
+
+manage Jenkins > manage plugins > here search
+
+
+than configuring the job 
+
+go with post build action
+
+add post build action > deploy war/ear to a container
+
+
+war/ear file = **/*.war
+
+
+*.war = all the war files
+
+**/ = it can be in any location
+
+ 
+context path = give any name (ex;-siva) (application accessing uniquely)
+
+
+add container > tomcat8  
+
+give  credentials
+
+url = http://private ip of QA :8080
+
+save and apply
+
+run the job 
+
+check the console out put
+
+
+
+
+take public ip of QA server : port number / context path
+
+
+ex; 
+
+10.0.0.0:8080/siva
+
+search in Google
+
+we get the application
+
+
+up to here we has to completed 3 stages
+
+continues download
+continues build
+continues deployment
+
+now going to stage 4 that is testng
+
+testing is all about testing script 
+
+better to create new job for testing 
+
+go with source code management tab 
+
+select git 
+
+this url is given by testing team
+
+git hub url
+
+https://github.com/sunildeevops77/testingnew.git
+
+
+
+apply and save
+
+run the job 
+
+testing scripts will configuring
+
+go with build tag
+
+add build step
+
+execute shell
+
+command = java -jar testing.jar
+
+
+
+how to call the second job when the first job  will be completed automatically
+
+configure the first job > post build action tag > add post build action > build other project's 
+
+in top of the page build other project
+
+give second job name 
+
+apply and save
+
+if run the first job automatically run the second job
+
+just observe
+
+
+copying the artifact from development job to testing job 
+
+the artifact (war) created by the development job should be passed to the testing job so that the testing job can deploy that into tomcat in the prod environment.
+
+install plugins
+
+"copy artifact" plugin  
+
+
+go to job one 
+
+configure the job 
+
+go to post build action > add post build action > archive the artifact
+
+in top of the page 
+
+file to archive = **/*.war
+
+apply and save
+
+
+go to second job 
+ 
+buils tag > add build step >copy artifact from another project 
+
+give project name
+  
+
+add post build 
+
+deploy to containers
+
+**/*.war
+
+give contest path 
+ 
+
+add container 
+
+add creadintials of prod server
+
+give url = http://priva ip of prod : port number /context path
+
+the total all ci/cd stages has completed and we did a simple pipeline also....
+
+
+
+security of jenkins :-
+
+
+how to crate new users
+
+manage jenkins > manage users > create new users
+
+for example we have two users some x,y one is developer and another one tester we need to define the roles to them for this 
+
+we have to need a plugin that is 
+
+
+"role based authorization strategy plugin"
+
+manage jenkins >  authorization > role based strategy  
+
+save
+
+in jenkins we have two types of roles 
+
+1. global roles
+2. item role / project role
+
+manage jenkins > manage and assign roles
+
+assign the roles to user
+
+
+
+re-start the jenkins 
+
+http://public ip :8080/restert
+
+if we login into jenkins as user1 we can access on the development related jobs and user2 can access only the testing related jobs
+
+plugin installation is a one time process
+
+
+>> need for master slave configuration 
+>> establishing passward-less connection between master and slave machine
+>> create new node in jenkns
+>> run the job in node machine
+
+
+master slave configuration:-
+
+
+same version of java should exist.
+
+master and slave should have passward less SSH
+
+step 1:- create slave machine,connect to slave 
+
+1. update the apt repository 
+
+sudo apt-get update 
+
+2.install java jdk
+
+sudo apt insall openjdk-8-jdk -y
+
+3.check the java version 
+
+java -version
+
+
+
+we need to establish passward less connection between dev server and slave machine 
+
+connect to slave machine 
+
+check the user 
+
+$ whoami   (ubuntu)
+
+set password for ubuntu user 
+
+syntax: sudo passwd <user_name>
+ex: sudo passwd ubuntu
+enter password
+
+$ cd/etc/ssh
+
+$ls  we get list of files look for sshd_config
+
+
+to edit sshd_ config
+
+$ sudo vim sshd_config
+
+go to insert mode 
+
+change the password authontication to yes
+
+save and quit :wq
+
+restart the service 
+
+$sudo service ssh restart 
+
+
+
+let's test the connection  
+-----------------------------------
+
+
+connect to the dev server (master)
+
+connect to the slave machine through dev server 
+
+ssh ubuntu@private_ip_slave_machine 
+
+$ssh ubuntu@172.31.1.107
+
+give the  password 
+
+just observe , you are conected with the slave machine.
+
+
+exit. get back to the master machine .
+
+upto here we are developing the communication between the master and slave machine with password by using ssh port 
+
+
+let's do the password less communication bet ween the master and slave machine we need to do few more steps 
+
+for password less communication we need to genarate the keys in master machine .that keys are copy into the slave machine 
+
+
+genarate a keys in master machine 
+
+$ ssh-keygen
+
+
+copy the keys to slave machine 
+
+$ssh-copy-id ubuntu@private_ip_slave_server
+$ssh-copy-id ubuntu@172.31.1.107
+
+give password.
+
+now we are able to connect to the slave machine without password
+
+$ ssh ubuntu@private_ip_slave_machine
+
+---------------------------------------------
+
+
+when the jenkins is installed automatically slave.jar file also installed
+
+now slave.jar file is present in master or dev server
+
+so download the slave.jar in slave machine from dev server 
+
+sudo wget http://private_ip_dev_server:8080/jnlpjars/slave.jar
+
+(in slave machine)
+
+check  the file is download or not 
+
+$ls
+
+check the file permissions 
+
+$ls -l
+
+we want rwxrw-r--
+
+for the change 
+
+$ sudo chmod u+x slave.jar
+
+
+create an empty folder which will like workspace for jenkins to use on the slave machine 
+
+$mkdir workspace
+$cd workspace/
+$pwd  
+
+note the path ----  /home/ubuntu/workspace
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+create a new node in jenkins:-
+
+open the dashboard of jenkins 
+
+manage jenkins -->> manage nodes and cloud
+ 
+the defolt node is called master
+
+new node -->> node name - my slave
+              - select permanent agent
+
+remote toor directory -- /home/ubuntu/workspace
+
+label - slave_lab
+
+go to lanch method---
+
+launch agent via execution of command on the controller
+
+in launch command 
+ssh ubuntu@private_ip_of_slave java -jar slave.jar
+
+ex :
+ssh ubuntu@172.31.39.251 java -jar slave.jar
+
+click on save
+
+
+the main resources to create a node is
+
+node name
+remote root directory path
+label
+launch command
+
++++++++++++++++++++++++++++++++++++++++++++++
+
+how to make sure the job runs on slave machine
+
+select testing job 
+
+go to configure -->> general tab
+
+check restrict where this project can be run 
+
+enter label expression (slave_lab)
+
+apply --> save
+
+run the job, in console out , we can see the job is executed in slave machine
+
++++++++++++++++++++++++++++++++++++++++++++++
+
+Agenda 
+
+what is pipeline job ?
+advantages of pipeline job ?
+build pipeline plug in ?
+genarating the groovy code ?
+perform CI/CD stages using groovy code ?
+
+
+
+pipe line :-
+-------------------
+
+implementing CI-CD from the level of code.
+this code is creating using groovy script,and this file is also called as jenkins file.
+
+advantages:-
+----------------
+
+as pipeline is implemented as code,it gives the developers the ability to upload into vesion controlling system from where they can edit and review the script.
+
+pipelines can accept interactive human input before continuing with specific stage in CI-CD
+
+ex; 
+
+before deployment into production environment, pipeline script can accept approval from the head and than continue.
+
+
+the pipeline script support complex realtime scenario where we can implement conditional statements, loops ect.
+
+ex;  
+    if testing passes, we want to go to delivery 
+
+if testing fails , we want to send automated emails.
+
+====================================================
+
+pipeline syntax:-
+
+------------------
+
+node('master/slave')
+{
+       stage('stage in CI-CD')
+       { 
+             groovy code for implementing the stage
+        }
+}
+
+
+==================================================
+
+
+for creating pipeline jobs in jenkins we want to need plugin called
+
+" BUILD PIPELINE PLUGIN "
+
+=========================================
+
+install build pipeline plugin:
+-------------------------------
+
+jenkins dash board -->> manage jenkins -->>  manage plug in -->> install build pipeline plugin 
+
+===============================================
+
+ex ;
+ 
+ creating a new job -- new item -- name can be any thing , select pipeline -- ok.
+
+if we observe we have four tags or triggers 
+
+general 
+build trigger
+advanced project options
+pipelline
+
+
+in pipeline tag we need to write a code for CI-CD automation
+
+in jenkins we have a option called snippet genarator it help to build a code for ci-cd
+
+
+sellect -- pipeline syntax
+
+than you got a extra window that is snippet genarator
+
+first step to alocate the node
+
+step  simple step
+ 
+select -- node:allocate node
+
+lable -- master
+ 
+genarate pipeline script
+
+copy the code and past it in your note pad
+
+than next step is stage
+ 
+simple step -- stage:stage
+
+stage name -- continuos download
+
+for continuous build take shall script maven package
+
+for deplyment in pipeline job we want to need a pre requsite that is passwod less communication bet ween dev and QA server
+
+as we know just do it 
+
+connect to QA
+set the password for the ubuntu
+
+$ sudo passwd ubuntu
+
+edit sshd_config (password authontication --yes)
+
+$ cd/etc/ssh
+$ sudo vim sshd_config
+
+restart the service
+
+$ sudo service ssh restart
+
+now connect to dev
+
+$ ssh-keygen
+
+copy the keys in QA server
+
+$ ssh-copy-id ubuntu@private_ip_QA server
+
+for test are you able to connect to qa
+
+$ ssh ubuntu@private_ip_QA server\
+
+passward less communication was created
+
+now you can copy the file from dev to qa
+
+create a file in dev server
+
+$ cat > file1
+ajfngkjnafng
+ctrl+d
+  
+
+to copy the file in QA server
+
+syntax
+
+scp source destination 
+
+$ scp file1 ubuntu@private_ip_QA server:/tmp/file2
+
+
+just varify the was avilable or not 
+
+
+
+multibranch pipeline:-
+-------------------------------
+when developer creates code for multiple functionalities, he will generally do that on separate branches.
+every branch will contaions specific code related to one functionality.
+along with the code , the developer will also create a separate jenkins file for every branch.
+this jenkins file will contains the stages of CI-CD that should be perfoormed on that branch .
+all these branches along with the jenkins file will be uploded by into the github repository.
+
+we should create a jenkins job, which will work on these branches parallely and execute the steps present in different jenkins files.
+
+ 
+
+steps performed by the developer:-
+-------------------------------------------
+
+$ mkdir multibranch
+
+$ cd multibranch
+
+
+creating a new folder name called multibranch in our local system
+
+in the folder open git bash...
+
+download the file of meven repository 
+
+$ git clone https://github.com/sunildevops77/maven.git
+
+
+$ ls
+
+$ cd maven/
+
+
+
+$git init 
+$git status
+$git add .
+$git commit -m "a"
+$git log
+
+
+developer create the new branch
+
+
+$git status
+$git add .
+$git commit -m "b"
+$git log
+
+
+here we trying to go with two branches for multi branch pipeline job in jenkins the developer write some code in local system along with code we have jenkins file it contains the CI-CD stages of automachine the  overall code push into the github take github url configure in jenkis and run mention the interwells of 1 min 
+
+select multibranch pipeline
+
+
+
+==========================================
+Email integration in jenkins.
+
+Trigger the job periodically.
+
+Wait for the approval from delivery head,before moving it to production.
+
+-----------------------------------------
+
+Email integration :-
+
+in case if the job fails we need to send notification.
+
+for that we need to integrate jenkins to smtp server.
+
+we are now integrating jenkins with gmail smtp server.
+
+search in google "gmail smtp server"
+
+SMTP server: smtp.gmail.com
+port: 465
+
+
+
+
+manage jenkins --- configure system
+Email notification
+
+SMTP server - smtp.gmail.com
+click on advance button 
+
+use smtp authentication 
+
+username;
+password:
+
+
+use SSL
+SMTP port - 465
+test configuration by sending e-mail
+check in mail
+
+--------------------------------------------
+
+goto google account --less secure app  access -- allow less secure apps : ON 
+
+"disable captcha gmail" search in google "disable captcha gmail " -- contiue 
+
+
+
+================================================
+
+build periodically 
+-----------------------
+
+to build the job periodically
+we use cron format
+
+we need to give 5 values
+
+min - 0-59
+hour - 0-23
+dom - 1-31
+month - 1-12
+dow - (0-7)where 0 and 7 are sunday
+
+
+let's say you want to run the job every day at 9:30 pm 
+
+30 21 * * *
+
+
+let's say you want to run the job every day at 9:30 PM from mon to friday
+
+30 21 * * 1-5
+
+
+TO run the job every minute
+
+* * * * *
+
+=====================================================
+
+under scoure code management tab
+
+Build trigger -- Build periodically
+
+
+================================================
+
+Wait for the approval from delivery head,before moving it to production.
+
+
+
+by using snypet generator 
+
+the option calld "wait for intractive input"
+
+
+=============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

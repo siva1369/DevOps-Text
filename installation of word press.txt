@@ -1,0 +1,178 @@
+installation of word press applicationn with monolithic architecture:-
+---------------------------------------------------------------------
+
+
+"mobaXterm" home edition is a tool for connecting remote servers like git bash.
+
+
+in linux commands
+
+$ uname = linux
+
+to know the flavor of linux
+
+$ cat /etc/os-release
+
+about "grep" command in linux is for search perpose.
+
+it for serrching for log's are names.
+
+-------------------------------------------------------------------
+
+here we have to create a LAMP architecture
+
+when we are create a linux mechine there L was completed.
+
+then install apache in linux mechine.
+
+$ sudo apt-get install apache2 -y
+
+check the apache2 in mechine
+
+$ sudo service apache2 status
+
+to restat the service 
+
+$ sudo service apache2 restart
+
+to stop the service
+
+$ sudo service apache2 stop
+
+to start the service
+
+$ sudo service apache2 start
+
+
+apache also created so in the LAMP architecture A also completed
+
+
+than start the mysql server in the mechine
+
+$ sudo apt-get install mysql-server
+
+
+than start the php server
+
+$ sudo add-apt-repository ppa:ondrej/php
+
+install the php
+
+$ sudo apt-get install php7.3 -y
+
+check the php version
+
+$ php -v
+
+install the php packages
+
+$ sudo apt install php7.3-cli php7.3-fpm php7.3-pdo php7.3-mysql php7.3-zip php7.3-gd php7.3-mbstring php7.3-curl php7.3xml php7.3-bcmath php7.3-json
+
+ 
+
+setup the sql data base
+
+$ sudo mysql_secure_installation
+
+press : y
+
+strong : 0
+
+new password:
+
+re-enter new password:
+
+give all "y" and enter .... enter
+
+all done.
+
+to enter into sql
+
+$ sudo mysql
+
+or
+
+# mysql
+
+
+than 
+
+exicute these commands
+
+
+mysql> create database bitnami_wordpress;
+
+mysql> CREATE USER 'bn_wordpress'@'localhost' IDENTIFIED BY'45bee7e8ac';
+
+mysql> GRANT ALL ON bitnami_wordpress.* TO 'bn_wordpress'@'localhost' IDENTIFIED BY'45bee7e8ac';
+
+Give premission to user
+
+mysql> SELECT DISTINCT User FROM mysql.user; (optinal)
+
+mysql> FLUSH PRIVILEGES;
+
+mysql> exit
+
+
+dowload tar file
+
+$ cd /var/www/html/
+
+$ sudo wget -c http://wordpress.org/latest.tar.gz
+
+untar the file
+
+$ sudo tar -xzvf latest.tar.gz
+
+$ ls
+
+backup the index.html file
+
+$ sudo mv index.html index.html.bkp
+
+$ sudo rm -rf latest.tar.gz
+
+$ ls
+
+$ sudo mv wordpress/* .
+
+$ sudo rm -rf wordpress/
+
+$ sudo service apache2 restart
+
+take the public ip browse in chrome get wordpress inthe place of apache2
+
+
+select english
+
+ 
+database name = bitnami_WordPress 
+
+username = bn_wordpress
+
+password = 45bee7e8ac
+
+database host =
+
+table prefix =
+
+submit
+
+
+information needed
+
+site title = carrier
+
+username = carrier
+
+password = 
+
+your email =
+
+search engine =
+
+>>instal
+
+
+than get the word press application

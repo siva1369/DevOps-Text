@@ -1,0 +1,224 @@
+
+maven
+--------------
+maven is a product of apache.
+
+maven is build tool.it package the source code and build the artifact (war,jar,exe,msi).
+
+
+API vulnerabilitys
+
+
+maven global server (search.maven.org)
+
+here avilble API's which are free from vulnerabilitys
+
+
+all the open source communities like jenkins,tomcat,mysql etc upload their updated API's into maven global server
+
+developers connect to the maven global server ,download those API's that are necessary for the project development and they store them into maven local repository.
+
+all developers connect to maven local repository amd perform the ddevelopment activity 
+
+in this way the code is stored seperately in github. the api's requires for the code development are stored in maven local repository
+
+this will helps in protecting the source code from any threats/viruses that might be present in the API'S
+
+maven is also a build tool. where it can compile the programs and create a atrifact .
+
+
+
+we need to install java jdk file from oracle 
+
+where the jdk is installed path
+
+c:\program files\java\jdk1.8.0_271
+
+C:\Program Files\Java\jdk1.8.0_333
+
+copy this path
+
+this pc --> properties --> advanced system setting --> advanced tab --> environment variables --> system variable --> new
+
+
+variable name = JAVA_HOME
+variable value = c:\program files\java\jdk1.8.0_271,,C:\Program Files\Java\jdk1.8.0_333,
+
+
+ok
+
+path -- C:\Program Files\Java\jdk1.8.0_333\bin
+
+
+download apache maven
+
+
+create new enviroment variable
+
+
+
+variable name = M2_HOME
+
+variable value = E:\apache-maven-3.8.6-bin\apache-maven-3.8.6
+
+new path = E:\apache-maven-3.8.6-bin\apache-maven-3.8.6\bin
+
+
+for checking maven configure or not
+
+open CMD
+
+mvn --version
+
+
+
+artifact:-
+ 
+it is a final file of source code
+
+
+
+maven number :-
+
+mvn archetype:generate (in CMD)
+
+
+type of project is dependent on the above number 
+
+1740 -- for spring project 
+1797 -- for sample maven project 
+1244 -- mvc 4 web application
+2630 -- project for multiple platforms web , android and ios
+
+
+
+let's select the defolt number= 1797 enter defolt number
+
+
+
+group id :-
+
+this is for project structure
+
+ex :-
+
+for commercial application -- ex: com.<project_name>
+
+for government application -- ex: gov.<project_name>
+
+for organization application -- ex: org.<project_name>
+
+
+
+define the value for group id =com.hdfc
+
+what is artifactid : webapphdfc (with this name artifact will be created)
+
+we get build success massage with project location
+
+in project folder we got two files 
+
+1. src
+
+main -- the total code 
+test --  unit test
+
+2. pom.xml
+
+pom - project object modal
+
+in this will store the API's information
+
+
+here open git bash and commit the directories
+
+how to download the API's 
+
+in the browser select our required api take dependency tag copy it
+
+than open the pom.xml file in that file we can observe the dependency tag select that one and past it and save 
+
+than download the API's
+
+in cmd
+
+> cd webapphdfc
+> mvn compile
+
+maven local repository is created with the name .m2  (this is hidden folder)
+
+observe the project file
+
+we have get third folder that is "target"
+
+open git bash and commit these target folder and modified pom.xml
+
+
+now we need to compile all java files 
+
+in cmd 
+
+> mvn compile
+
+this will compile the files in the test file 
+
+> mvn test
+
+than pakage a source code of class file and genarate an artifact
+
+> mvn package
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
