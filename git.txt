@@ -76,6 +76,30 @@ as per git we have 3 types
 2. staged file
 3. commited file
 
+
+                +------------------+
+                |   Working Tree   |
+                | (Untracked Area) |
+                +--------+---------+
+                         |
+                         | git add
+                         v
+                +------------------+
+                |  Staging Area    |
+                +--------+---------+
+                         |
+                         | git commit
+                         v
+                +------------------+
+                | Local Repository |
+                +--------+---------+
+                         |
+                         | git push
+                         v
+                +------------------+
+                | Remote Repository|
+                +------------------+
+
 moving the untracked section to staging area
 
 $ git add file name
