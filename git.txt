@@ -45,6 +45,28 @@ To check the confirmation
 $ git config --global --list
 
 
+Local (specific to a repo)
+$ git config --local --list
+
+
+Global (for your user account)
+
+$ git config --global --list
+
+
+System (for all users on a machine)
+
+$ git config --system --list
+
+ 
+Delete a Git Config Value
+
+$ git config --global --unset user.email
+
+$ git config --local --unset user.name
+
+$ sudo git config --system --unset user.name
+
 
 types of files
 
