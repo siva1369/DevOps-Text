@@ -1,0 +1,80 @@
+linux animation commands:-
+
+
+for train figure 
+
+$ sl
+
+if it is not installed let's install 
+
+$ sudo apt install sl
+
+for clour full train 
+
+$ sl | lolcat
+
+if lolcat not installed let's install 
+
+$ sudo snap install lolcat
+
+
+to get matrix effect
+
+$ sudo apt install cmatrix
+
+$ cmatrix
+
+
+-a: Asynchronous scroll
+-b: Bold characters on
+-B: All bold characters
+-o: Use old-style scrolling
+-m: Every character becomes a lambda
+-C <color>: Set a specific color instead of the default green. For example, cmatrix -C blue sets the character color blue
+
+
+3. aafire: ASCII Art Fireworks
+
+$ aafire
+
+$ sudo apt install libaa-bin
+
+
+
+4. oneko: A Playful Desktop Pet
+
+
+$ sudo apt install oneko
+
+$ oneko
+
+
+5. xeyes: Watch the Eyeballs
+
+$ sudo apt install x11-apps
+
+$ xeyes
+
+6. espeak: Let Your Computer Speak Up
+
+
+$ sudo apt install espeak
+
+$ espeak "<text>"
+
+
+7. yes: The Ultimate Affirmation
+
+
+8. asciiquarium: Under the Sea
+
+$ sudo snap install asciiquarium
+
+$ asciiquarium
+
+10. toilet: Text Art Banners
+
+$ sudo apt install toilet
+
+$ toilet
+
