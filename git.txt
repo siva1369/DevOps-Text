@@ -1,5 +1,5 @@
 git
------
+------------
 git is a version controlling tool and SCM TOOL
 
 1.centralized version controlling
@@ -357,14 +357,27 @@ mv ~/.gitconfig ~/.gitconfig_old
 
 
 
+GitHub:-
+--------
+GitHub is a cloud-based Git repository hosting service that facilitates source code management, collaboration, and CI/CD integration. It plays a crucial role in DevOps workflows by enabling version control, pull request-based reviews, issue tracking, and seamless integration with automation tools like Jenkins, GitHub Actions, and Travis CI.
+
+---
+
+Key Concepts in GitHub
+
+Repositories: Centralized code storage (public or private) for your projects.  
+Branches: Parallel versions of your code for feature development and bug fixes.  
+Pull Requests: Code review and merge process for collaborating on changes.  
+Issues: Tracking bugs, enhancements, and tasks.  
+Actions: CI/CD pipelines built directly into GitHub.  
+Webhooks:Automate workflows by sending events to external services.
+
+
 
  
 
 git and GitHub:-  (version control system)
 ----------------
-
-
-Sure, Git is a widely used version control system that helps track changes in source code during software development. Here's a brief overview and some common interview questions about Git:
 
 
 Overview of Git:
@@ -402,4 +415,5 @@ Common Interview Questions about Git:
 
 10. What is Git rebase?
     - Git rebase is a command used to reapply commits on top of another base branch. It allows you to maintain a linear project history by moving, combining, or deleting commits.
+
 
