@@ -1,5 +1,5 @@
 git
-------------
+-----
 git is a version controlling tool and SCM TOOL
 
 1.centralized version controlling
@@ -82,13 +82,13 @@ as per git we have 3 types
                 | (Untracked Area) |
                 +--------+---------+
                          |
-                         | git add
+                         | git add .
                          v
                 +------------------+
                 |  Staging Area    |
                 +--------+---------+
                          |
-                         | git commit
+                         | git commit --m "give any commit"
                          v
                 +------------------+
                 | Local Repository |
@@ -97,7 +97,7 @@ as per git we have 3 types
                          | git push
                          v
                 +------------------+
-                | Remote Repository|
+                | Remote Repository|   (GITHUB)
                 +------------------+
 
 moving the untracked section to staging area
@@ -317,8 +317,11 @@ $ git reset --hard (commit id)
 
 
 git == tool
-git hub == remote repository
+github == remote repository
 git bash == terminal
+github actions == ci-cd
+
+
 
 
 git hub account 
@@ -370,151 +373,33 @@ Git is a distributed version control system designed to handle everything from s
 
 Common Interview Questions about Git:
 
-1. **What is Git?**
+1. What is Git?
    - Git is a distributed version control system that allows multiple developers to collaborate on projects, tracking changes in source code during software development.
 
-2. **What are the benefits of using Git?**
+2. What are the benefits of using Git?
    - Git provides benefits such as decentralized version control, support for non-linear development, branching and merging capabilities, data integrity, and speed.
 
-3. **Explain the difference between Git and SVN (Subversion).**
+3. Explain the difference between Git and SVN (Subversion)?
    - Git is distributed, allowing for offline work and full repository mirroring, whereas SVN is centralized and requires a constant connection to the repository server.
 
-4. **What is a commit in Git?**
+4. What is a commit in Git?
    - A commit in Git is a snapshot of changes made to a repository at a specific time. It creates a new version of the repository's files that can be referenced later.
 
-5. **What is a branch in Git?**
+5. What is a branch in Git?
    - A branch in Git is a lightweight movable pointer to a commit. It allows developers to work on different versions of a repository simultaneously without affecting the main codebase.
 
-6. **How do you revert a commit that has already been pushed and made public?**
+6. How do you revert a commit that has already been pushed and made public?
    - You can revert a commit by using `git revert <commit-id>` to create a new commit that undoes the changes introduced by the specified commit.
 
-7. **Explain the difference between Git pull and Git fetch.**
+7. Explain the difference between Git pull and Git fetch?
    - `git pull` fetches changes from a remote repository and merges them into the current branch, while `git fetch` fetches changes from a remote repository but does not merge them into the current branch. It updates the remote tracking branches.
 
-8. **What is a merge conflict in Git? How do you resolve it?**
+8. What is a merge conflict in Git? How do you resolve it?
    - A merge conflict occurs when Git cannot automatically merge changes from different branches. To resolve it, you need to manually edit the conflicting files, mark them as resolved with `git add`, and then commit the changes.
 
-9. **How do you create a new branch in Git?**
+9. How do you create a new branch in Git?
    - You can create a new branch in Git using `git checkout -b <branch-name>` or `git branch <branch-name>` followed by `git checkout <branch-name>`.
 
-10. **What is Git rebase?**
+10. What is Git rebase?
     - Git rebase is a command used to reapply commits on top of another base branch. It allows you to maintain a linear project history by moving, combining, or deleting commits.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
 
